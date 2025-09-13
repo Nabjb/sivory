@@ -56,3 +56,36 @@ a {
 html {
   scroll-behavior: smooth;
 }
+
+/* Premium shimmer border animation */
+@keyframes shimmer-border {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animate-shimmer-border {
+  animation: shimmer-border 4s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    #CF9160 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 300% 300%;
+  border-radius: inherit;
+}

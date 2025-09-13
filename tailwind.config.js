@@ -27,6 +27,9 @@ module.exports = {
         'slide-in-left': 'slideInLeft 0.8s ease-out',
         'slide-in-right': 'slideInRight 0.8s ease-out',
         'float': 'float 3s ease-in-out infinite',
+        'aurora': 'aurora 10s ease-in-out infinite',
+        'shimmer-slide': 'shimmer-slide var(--speed) ease-in-out infinite alternate',
+        'spin-around': 'spin-around calc(var(--speed) * 2) infinite linear',
       },
       keyframes: {
         fadeInUp: {
@@ -52,6 +55,23 @@ module.exports = {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        aurora: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'shimmer-slide': {
+          'to': {
+            transform: 'translate(calc(100cqw - 100%), 0)',
+          },
+        },
+        'spin-around': {
+          '0%': {
+            transform: 'translate(50%, 50%) rotate(0deg)',
+          },
+          '100%': {
+            transform: 'translate(50%, 50%) rotate(360deg)',
+          },
         },
       },
     },

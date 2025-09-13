@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { AuroraBackground } from '@/components/AuroraBackground'
+import { ProfessionalFooter } from '@/components/ProfessionalFooter'
 
 export default function OutdoorDesign() {
   const projects = [
@@ -37,29 +39,33 @@ export default function OutdoorDesign() {
   ]
 
   return (
-    <div className="min-h-screen bg-brand-white">
+    <AuroraBackground className="min-h-screen">
       {/* Hero Section */}
       <motion.section 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="relative py-24 bg-gradient-to-br from-brand-white to-brand-gray/10"
+        className="relative pt-32 pb-20 md:pt-40 md:pb-24 z-10 w-full"
       >
-        <div className="container mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <div className="text-brand-gold/60 text-sm md:text-base font-medium tracking-widest uppercase mb-4">
+            <div className="text-brand-gold text-sm md:text-base font-semibold tracking-[0.2em] uppercase mb-8">
               Outdoor Design Portfolio
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-black via-brand-gold to-brand-gray mb-6">
-              Outdoor Excellence
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-8 tracking-tight leading-tight">
+              Outdoor <span className="font-bold bg-gradient-to-r from-brand-gold via-brand-gold to-white bg-clip-text text-transparent">Excellence</span>
             </h1>
-            <p className="text-xl text-brand-black/70 max-w-3xl mx-auto">
-              Transforming outdoor spaces with premium pergolas, shade solutions, and complete outdoor living experiences.
+            
+            {/* Decorative line */}
+            <div className="h-px bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto mb-12 w-32" />
+            
+            <p className="text-lg md:text-xl text-white/80 max-w-4xl mx-auto leading-relaxed font-light">
+              Transforming outdoor spaces with premium pergolas, shade solutions, and complete outdoor living experiences that redefine luxury.
             </p>
           </motion.div>
 
@@ -68,13 +74,13 @@ export default function OutdoorDesign() {
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="mb-12"
+            className="flex justify-center mb-16"
           >
             <Link href="/">
               <motion.button
-                whileHover={{ scale: 1.05, x: -5 }}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-6 py-3 border-2 border-brand-gold text-brand-black font-semibold rounded-full hover:bg-brand-gold hover:text-white transition-all duration-300"
+                className="flex items-center gap-3 px-8 py-4 border-2 border-brand-gold/60 text-white font-semibold rounded-full hover:bg-brand-gold hover:text-black transition-all duration-300 backdrop-blur-sm bg-white/8 shadow-lg hover:shadow-xl"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -87,40 +93,59 @@ export default function OutdoorDesign() {
       </motion.section>
 
       {/* Projects Grid */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="py-24 relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-tight">
+              Featured <span className="font-bold text-brand-gold">Projects</span>
+            </h2>
+            <div className="h-px bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto mb-8 w-24" />
+            <p className="text-white/70 max-w-2xl mx-auto leading-relaxed">
+              Explore our most stunning outdoor transformations and pergola installations
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + index * 0.1, duration: 0.8 }}
-                whileHover={{ y: -10 }}
+                transition={{ delay: 0.8 + index * 0.1, duration: 0.8 }}
+                whileHover={{ y: -12, scale: 1.02 }}
                 className="group cursor-pointer"
               >
-                <div className="relative overflow-hidden rounded-2xl shadow-xl">
+                <div className="relative overflow-hidden rounded-3xl shadow-2xl border border-white/10 hover:border-brand-gold/40 transition-all duration-500">
                   <div 
-                    className="w-full h-80 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url('${project.image}')` }}
+                    className="w-full h-96 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style={{ backgroundImage: `url('/images/outdoorcard.png')` }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-black/70 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
                   
                   {/* Project Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <div className="text-brand-gold text-sm font-medium mb-2">
+                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                    <div className="text-brand-gold text-sm font-semibold mb-3 tracking-wide uppercase">
                       {project.category}
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">
+                    <h3 className="text-2xl md:text-3xl font-light mb-4 group-hover:text-brand-gold transition-colors duration-300">
                       {project.title}
                     </h3>
-                    <p className="text-white/80">
+                    <p className="text-white/80 leading-relaxed text-base">
                       {project.description}
                     </p>
                   </div>
 
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-gold/30 via-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Glass morphism overlay */}
+                  <div className="absolute inset-0 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </motion.div>
             ))}
@@ -128,29 +153,8 @@ export default function OutdoorDesign() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="py-24 bg-gradient-to-r from-brand-gray/10 to-brand-gold/10"
-      >
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-6">
-            Ready to Transform Your Outdoor Space?
-          </h2>
-          <p className="text-xl text-brand-black/70 mb-8 max-w-2xl mx-auto">
-            Let's create your perfect outdoor living experience with our premium pergola designs.
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-10 py-4 bg-gradient-to-r from-brand-gold to-brand-gray text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            Get Your Free Quote
-          </motion.button>
-        </div>
-      </motion.section>
-    </div>
+      {/* Professional Footer */}
+      <ProfessionalFooter pageType="outdoor" />
+    </AuroraBackground>
   )
 }
