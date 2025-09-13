@@ -4,43 +4,55 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { AuroraBackground } from '@/components/AuroraBackground'
 import { ProfessionalFooter } from '@/components/ProfessionalFooter'
+import { client } from '@/sanity/lib/client'
+import { useEffect, useState } from 'react'
+
+interface Subcategory {
+  _id: string
+  title: string
+  slug: { current: string }
+  projectCount: number
+}
 
 export default function OutdoorDesign() {
-  const projects = [
-    {
-      id: 1,
-      title: "Modern Pergola Paradise",
-      description: "Contemporary design with clean lines and premium materials",
-      image: "/images/per1.jpg",
-      category: "Pergolas"
-    },
-    {
-      id: 2,
-      title: "Luxury Outdoor Living",
-      description: "Complete outdoor transformation with integrated lighting",
-      image: "/images/per2.jpg",
-      category: "Complete Spaces"
-    },
-    // Placeholder projects
-    {
-      id: 3,
-      title: "Garden Pergola Retreat",
-      description: "Natural wood finish with climbing plant integration",
-      image: "/images/per1.jpg",
-      category: "Pergolas"
-    },
-    {
-      id: 4,
-      title: "Poolside Elegance",
-      description: "Water-resistant design with premium shade solutions",
-      image: "/images/per2.jpg",
-      category: "Pool Areas"
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchSubcategories() {
+      try {
+        const query = `*[_type == "subcategory" && category->title == "Outdoor"] | order(title asc) {
+          _id,
+          title,
+          slug,
+          "projectCount": count(*[_type == "project" && subcategory->_id == ^._id])
+        }`
+        
+        const data = await client.fetch(query)
+        setSubcategories(data)
+      } catch (error) {
+        console.error('Error fetching subcategories:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+
+    fetchSubcategories()
+  }, [])
+
+  if (loading) {
+    return (
+      <AuroraBackground className="min-h-screen">
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-white text-xl">Loading categories...</div>
+        </div>
+      </AuroraBackground>
+    )
+  }
 
   return (
     <AuroraBackground className="min-h-screen">
-      {/* Hero Section */}
+      {/* Hero Section - Keep exactly the same */}
       <motion.section 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -92,7 +104,7 @@ export default function OutdoorDesign() {
         </div>
       </motion.section>
 
-      {/* Projects Grid */}
+      {/* Subcategories Grid - NEW: Shows subcategories instead of projects */}
       <section className="py-24 relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Section Header */}
@@ -103,50 +115,39 @@ export default function OutdoorDesign() {
             className="text-center mb-20"
           >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-tight">
-              Featured <span className="font-bold text-brand-gold">Projects</span>
+              Outdoor <span className="font-bold text-brand-gold">Categories</span>
             </h2>
             <div className="h-px bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto mb-8 w-24" />
             <p className="text-white/70 max-w-2xl mx-auto leading-relaxed">
-              Explore our most stunning outdoor transformations and pergola installations
+              Choose a category to explore our outdoor design projects
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {projects.map((project, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {subcategories.map((subcategory, index) => (
               <motion.div
-                key={project.id}
+                key={subcategory._id}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 + index * 0.1, duration: 0.8 }}
                 whileHover={{ y: -12, scale: 1.02 }}
                 className="group cursor-pointer"
               >
-                <div className="relative overflow-hidden rounded-3xl shadow-2xl border border-white/10 hover:border-brand-gold/40 transition-all duration-500">
-                  <div 
-                    className="w-full h-96 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url('/images/outdoorcard.png')` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
-                  
-                  {/* Project Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                    <div className="text-brand-gold text-sm font-semibold mb-3 tracking-wide uppercase">
-                      {project.category}
+                <Link href={`/outdoor-design/${subcategory.slug.current}`}>
+                  <div className="relative overflow-hidden rounded-3xl shadow-2xl border border-white/10 hover:border-brand-gold/40 transition-all duration-500 bg-white/5 backdrop-blur-sm">
+                    <div className="p-8 text-center">
+                      <h3 className="text-2xl md:text-3xl font-light mb-4 group-hover:text-brand-gold transition-colors duration-300">
+                        {subcategory.title}
+                      </h3>
+                      <p className="text-white/60 text-sm">
+                        {subcategory.projectCount} {subcategory.projectCount === 1 ? 'project' : 'projects'}
+                      </p>
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-light mb-4 group-hover:text-brand-gold transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-white/80 leading-relaxed text-base">
-                      {project.description}
-                    </p>
-                  </div>
 
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-gold/30 via-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Glass morphism overlay */}
-                  <div className="absolute inset-0 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-gold/20 via-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
